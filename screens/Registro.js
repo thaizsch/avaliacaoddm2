@@ -1,12 +1,12 @@
+import 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { auth } from '../firebase'
+import { auth, firestore } from '../firebase'
 
-import Registro from "./Registro";
-import HomeScreen from "./HomeScreen";
-
-const LoginScreen = () => {
+const Registro = () => {
+  const [nome, setNome] = useState('')
+  const [cpf, setCpf] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -22,19 +22,32 @@ const LoginScreen = () => {
     return unsubscribe
   }, [])
 
-  const Registro = () => {
-    navigation.replace("Registro")
+  const cancelar = () =>{
+    navigation.replace("Login")
   }
 
-  const handleLogin = () => {
+
+  const handleSignUp = () => {
     auth
-      .signInWithEmailAndPassword(email, password)
-      .then(userCredentials => {
-        const user = userCredentials.user;
-        console.log('Logged in with:', user.email);
-      })
-      .catch(error => alert(error.message))
-  }
+    .createUserWithEmailAndPassword(email, password)
+    .then((userCredentials) => {
+    const user = userCredentials.user;
+    const reference = firestore
+    .collection("User")
+    .doc(auth.currentUser.uid);
+    reference.set({
+    email: email,
+    // password: password,
+    nome: nome,
+    cpf: cpf,
+    });
+    console.log("Registered with:", user.email);
+    })
+    .catch((error) => alert(error.message));
+    };
+    
+  
+
 
   return (
     <KeyboardAvoidingView
@@ -42,6 +55,18 @@ const LoginScreen = () => {
       behavior="padding"
     >
       <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Nome"
+          value={nome}
+          onChangeText={text => setNome(text)}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Cpf"
+          value={cpf}
+          onChangeText={text => setCpf(text)}
+          style={styles.input}
+        />
         <TextInput
           placeholder="Email"
           value={email}
@@ -59,23 +84,24 @@ const LoginScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={handleLogin}
+          onPress={cancelar}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText}>Cancelar</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
-          onPress={Registro}
+          onPress={handleSignUp}
           style={[styles.button, styles.buttonOutline]}
         >
-          <Text style={styles.buttonOutlineText}>Register</Text>
+          <Text style={styles.buttonOutlineText}>Concluido</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   )
 }
 
-export default LoginScreen
+export default Registro
 
 const styles = StyleSheet.create({
   container: {

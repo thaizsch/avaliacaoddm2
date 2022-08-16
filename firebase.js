@@ -17,24 +17,14 @@ import "firebase/compat/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  
-  apiKey: "AIzaSyC5PpsbnndLOEgEuJv0tnPCCBrAHycaX6k",
-
-
-  authDomain: "diego-expo.firebaseapp.com",
-//
-databaseURL: "https://diego-expo-default-rtdb.firebaseio.com",
-
-//
-projectId: "diego-expo",
-
-storageBucket: "diego-expo.appspot.com",
-
-messagingSenderId: "60839181686",
-
-appId: "1:60839181686:web:986a38092f30caa32dce57"
-
+  apiKey: "AIzaSyDlYtJzdQYxDlcJLTAZrepZjTQJhLf4kFY",
+  authDomain: "thaisscnheiderheppavaliacao2.firebaseapp.com",
+  projectId: "thaisscnheiderheppavaliacao2",
+  storageBucket: "thaisscnheiderheppavaliacao2.appspot.com",
+  messagingSenderId: "1079068775111",
+  appId: "1:1079068775111:web:79128a13b20ffa01f364e2"
 };
+
 
 // Initialize Firebase
 let app;
